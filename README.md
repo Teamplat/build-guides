@@ -8,11 +8,11 @@ Step-by-step 3D build animations for the DENISE Engineering & Robotics Club's ES
 |---|---|
 | Air Piano | [air-piano](https://teamplat.github.io/build-guides/air-piano) |
 | Parking Sensor | [parking-sensor](https://teamplat.github.io/build-guides/parking-sensor) |
+| Radar | [radar](https://teamplat.github.io/build-guides/radar) |
 | Remote Jukebox | [remote-jukebox](https://teamplat.github.io/build-guides/remote-jukebox) |
 | Game Controller | [game-controller](https://teamplat.github.io/build-guides/game-controller) |
+| Light Follower | [light-follower](https://teamplat.github.io/build-guides/light-follower) |
 | Remote Fan | [remote-fan](https://teamplat.github.io/build-guides/remote-fan) |
 | WiFi Car | [wifi-car](https://teamplat.github.io/build-guides/wifi-car) |
-
-Older guides that are no longer on the home page still work: [radar](https://teamplat.github.io/build-guides/radar), [light-follower](https://teamplat.github.io/build-guides/light-follower).
 
 The pages are made with `tools/build_animation` in the club's main repo. Each page is one self-contained HTML file (three.js loads from jsDelivr). Sizes are real, shapes are simplified.
