@@ -32,6 +32,10 @@ header .hint{font-size:12px;color:var(--muted);background:var(--panel);padding:5
 .row button{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:10px;height:34px;min-width:40px;font-size:15px;cursor:pointer}
 .row button:hover{border-color:var(--accent)}
 .clean #panel,.clean header{display:none}
+#inset{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(14px + env(safe-area-inset-top,0px));background:#05080c;border:1px solid var(--line);border-radius:12px;padding:8px 10px 10px;box-shadow:0 10px 30px #0003}
+#inset span{display:block;color:#9fb3c8;font:600 11px system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+#inset canvas{display:block;width:min(256px,40vw);aspect-ratio:2/1;height:auto;image-rendering:pixelated}
+.clean #inset{display:none}
 .back{pointer-events:auto;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-weight:650;font-size:14px}
 .back:hover{border-color:var(--accent)}
 button:focus-visible,.back:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -59,7 +63,7 @@ button:focus-visible,.back:focus-visible{outline:2px solid var(--accent);outline
   </div>
   <div id="track"><div id="bar"></div></div>
 </div>
-<script>window.SPEC = {"title": "Remote Fan: how to build it", "board": {"type": "400"}, "parts": [{"id": "board", "type": "breadboard"}, {"id": "esp", "type": "esp32_30", "tag": "ESP32 (30-pin)"}, {"id": "ir", "type": "ir_rx", "pins": {"G": "18j", "R": "19j", "Y": "20j"}, "tag": "IR receiver"}, {"id": "r1", "type": "resistor", "ohms": 1000, "a": "22i", "b": "25i"}, {"id": "q1", "type": "transistor", "pins": {"E": "24f", "B": "25f", "C": "26f"}, "tag": "PN2222"}, {"id": "d1", "type": "diode", "anode": "26g", "cathode": "29g", "tag": "Diode"}, {"id": "fan", "type": "fan", "pos": [106.83, 30, -8.5], "rot": 180, "tag": "Motor + fan blade"}, {"id": "usb", "type": "usb", "to": [-300, -60, -8.5], "via": [[-120, -30, -6]]}, {"id": "remote", "type": "remote", "pos": [8.89, 190, -8.5], "rot": 180, "tag": "ELEGOO remote"}], "wires": [["2j", "red rail @4", "red", {}], ["3j", "blue rail @3", "black", {}], ["18h", "blue rail @16", "black", {}], ["2a", "19h", "white", {}], ["20f", "7j", "yellow", {}], ["8j", "22j", "orange", {}], ["24j", "blue rail @24", "black", {}], ["29h", "red rail @29", "red", {}], ["Motor -", "26j", "black", {"bare": true, "label": false}], ["Motor +", "29j", "red", {"bare": true, "label": false}]], "steps": [{"all": true, "title": "What you're building", "text": "Press <b>POWER</b> on the remote and the fan starts, <b>VOL+</b> makes it faster, <b>VOL\u2212</b> slower, POWER again stops it. A transistor works like a switch: the ESP32's tiny signal switches the much bigger motor current.", "hold": 9, "dist": 380, "el": 34}, {"title": "Small breadboard", "show": ["board"], "dist": 170, "text": "Use a small breadboard from the kit, <b>row 1 on the left</b>."}, {"title": "ESP32 (kit board)", "show": ["esp"], "dist": 150, "text": "Pins in <b>column b</b> and <b>column i</b>, <b>rows 2-16</b>, USB on the left. Check: <code>VIN</code> in <code>2i</code>, <code>3V3</code> in <code>2b</code>."}, {"title": "Power", "show": ["w0", "w1"], "focus": ["esp", "w0", "w1"], "dist": 140, "text": "<b>Red</b> <code>2j</code> (VIN, 5V from USB) \u2192 red rail row 4. <b>Black</b> <code>3j</code> (GND) \u2192 blue rail row 3."}, {"title": "IR receiver", "show": ["ir"], "focus": ["ir"], "dist": 100, "el": 30, "text": "Stand it in <b>column j</b>: <b>G</b> <code>18j</code>, <b>R</b> <code>19j</code>, <b>Y</b> <code>20j</code>, receiver facing outwards."}, {"title": "IR receiver wires", "show": ["w2", "w3", "w4"], "focus": ["ir", "w3", "w4"], "dist": 170, "text": "<b>Black</b> <code>18h</code> \u2192 blue rail row 16. <b>White</b> <code>2a</code> (3V3) \u2192 <code>19h</code>. <b>Yellow</b> <code>20f</code> \u2192 <code>7j</code> (pin 27)."}, {"title": "Transistor", "show": ["q1"], "focus": ["q1"], "dist": 70, "el": 40, "text": "PN2222: <b>flat side facing you</b>, legs left to right are <b>E B C</b>. Put them in <code>24f</code> (E), <code>25f</code> (B), <code>26f</code> (C)."}, {"title": "Resistor and wires", "show": ["r1", "w5", "w6"], "focus": ["r1", "q1", "w5"], "dist": 150, "text": "1k\u03a9 (brown, black, black, brown, brown) from <code>22i</code> to <code>25i</code>. <b>Orange</b> <code>8j</code> (pin 26) \u2192 <code>22j</code>. <b>Black</b> <code>24j</code> (emitter) \u2192 blue rail row 24."}, {"title": "Diode", "show": ["d1", "w7"], "focus": ["d1", "w7"], "dist": 90, "el": 45, "text": "Diode from <code>26g</code> to <code>29g</code>, <b>grey stripe on the 29 side</b>. <b>Red</b> <code>29h</code> \u2192 red rail row 29 (5V). The diode catches the voltage kick when the motor switches off."}, {"title": "Fan motor", "show": ["fan", "w8", "w9"], "focus": ["fan", "board"], "dist": 340, "el": 34, "text": "Push the fan blade on the motor and tape the motor to a cardboard stand. Motor's <b>black</b> wire \u2192 <code>26j</code>, <b>red</b> wire \u2192 <code>29j</code>. Twist the wire ends tight so they go into the holes."}, {"title": "USB and code", "show": ["usb"], "focus": ["esp", "usb"], "dist": 220, "text": "USB cable to the laptop, open <code>firmware/</code> in PlatformIO, <b>Upload</b>. If the ESP32 restarts when the fan starts, see the guide."}, {"title": "It works!", "show": ["remote"], "demo": true, "focus": ["board", "fan", "remote"], "dist": 430, "el": 38, "text": "<b>POWER</b> = on/off, <b>VOL+</b> = faster, <b>VOL\u2212</b> = slower. Different buttons from the Jukebox, so one remote can't set off both."}], "demo": "fan"};</script>
+<script>window.SPEC = {"title": "Remote Fan: how to build it", "board": {"type": "400"}, "parts": [{"id": "board", "type": "breadboard"}, {"id": "esp", "type": "esp32_30", "tag": "ESP32 (30-pin)"}, {"id": "ir", "type": "ir_rx", "pins": {"G": "22j", "R": "23j", "Y": "24j"}, "tag": "IR receiver"}, {"id": "r1", "type": "resistor", "ohms": 1000, "a": "26i", "b": "29i"}, {"id": "q1", "type": "transistor", "pins": {"E": "25f", "B": "26f", "C": "27f"}, "tag": "PN2222"}, {"id": "d1", "type": "diode", "anode": "27g", "cathode": "30g", "tag": "Diode"}, {"id": "fan", "type": "fan", "pos": [106.83, 30, -8.5], "rot": 180, "tag": "Motor + fan blade"}, {"id": "usb", "type": "usb", "to": [-300, -60, -8.5], "via": [[-120, -30, -6]]}, {"id": "remote", "type": "remote", "pos": [8.89, 190, -8.5], "rot": 180, "tag": "ELEGOO remote"}], "wires": [["2j", "red rail @4", "red", {}], ["3j", "blue rail @3", "black", {}], ["22h", "blue rail @22", "black", {}], ["2a", "23h", "white", {}], ["24f", "7j", "yellow", {}], ["8j", "29j", "orange", {}], ["25j", "blue rail @25", "black", {}], ["30h", "red rail @30", "red", {}], ["Motor -", "27j", "black", {"bare": true, "label": false}], ["Motor +", "30j", "red", {"bare": true, "label": false}]], "steps": [{"all": true, "title": "What you're building", "text": "Press <b>POWER</b> on the remote and the fan starts, <b>VOL+</b> makes it faster, <b>VOL\u2212</b> slower, POWER again stops it. A transistor works like a switch: the ESP32's tiny signal switches the much bigger motor current.", "hold": 9, "dist": 380, "el": 34}, {"title": "Small breadboard", "show": ["board"], "dist": 170, "text": "Use a small breadboard from the kit, <b>row 1 on the left</b>."}, {"title": "ESP32 (kit board)", "show": ["esp"], "dist": 150, "text": "Pins in <b>column b</b> and <b>column i</b>, <b>rows 2-16</b>, USB on the left. Check: <code>VIN</code> in <code>2i</code>, <code>3V3</code> in <code>2b</code>."}, {"title": "Power", "show": ["w0", "w1"], "focus": ["esp", "w0", "w1"], "dist": 140, "text": "<b>Red</b> <code>2j</code> (VIN, 5V from USB) \u2192 red rail row 4. <b>Black</b> <code>3j</code> (GND) \u2192 blue rail row 3."}, {"title": "IR receiver", "show": ["ir"], "focus": ["ir"], "dist": 100, "el": 30, "text": "Stand it in <b>column j</b>: <b>G</b> <code>22j</code>, <b>R</b> <code>23j</code>, <b>Y</b> <code>24j</code>, receiver facing outwards. Rows 17-21 are under the antenna end of the ESP32, so keep them empty."}, {"title": "IR receiver wires", "show": ["w2", "w3", "w4"], "focus": ["ir", "w3", "w4"], "dist": 170, "text": "<b>Black</b> <code>22h</code> \u2192 blue rail row 22. <b>White</b> <code>2a</code> (3V3) \u2192 <code>23h</code>. <b>Yellow</b> <code>24f</code> \u2192 <code>7j</code> (pin 27)."}, {"title": "Transistor", "show": ["q1"], "focus": ["q1"], "dist": 70, "el": 40, "text": "PN2222: <b>flat side facing you</b>, legs left to right are <b>E B C</b>. Put them in <code>25f</code> (E), <code>26f</code> (B), <code>27f</code> (C)."}, {"title": "Resistor and wires", "show": ["r1", "w5", "w6"], "focus": ["r1", "q1", "w5"], "dist": 150, "text": "1k\u03a9 (brown, black, black, brown, brown) from <code>26i</code> to <code>29i</code>. <b>Orange</b> <code>8j</code> (pin 26) \u2192 <code>29j</code>. <b>Black</b> <code>25j</code> (emitter) \u2192 blue rail row 25."}, {"title": "Diode", "show": ["d1", "w7"], "focus": ["d1", "w7"], "dist": 90, "el": 45, "text": "Diode from <code>27g</code> to <code>30g</code>, <b>grey stripe on the 30 side</b>. <b>Red</b> <code>30h</code> \u2192 red rail row 30 (5V). The diode catches the voltage kick when the motor switches off."}, {"title": "Fan motor", "show": ["fan", "w8", "w9"], "focus": ["fan", "board"], "dist": 340, "el": 34, "text": "Push the fan blade on the motor and tape the motor to a cardboard stand. Motor's <b>black</b> wire \u2192 <code>27j</code>, <b>red</b> wire \u2192 <code>30j</code>. Twist the wire ends tight so they go into the holes."}, {"title": "USB and code", "show": ["usb"], "focus": ["esp", "usb"], "dist": 220, "text": "USB cable to the laptop, open <code>firmware/</code> in PlatformIO, <b>Upload</b>. If the ESP32 restarts when the fan starts, see the guide."}, {"title": "It works!", "show": ["remote"], "demo": true, "focus": ["board", "fan", "remote"], "dist": 430, "el": 38, "text": "<b>POWER</b> = on/off, <b>VOL+</b> = faster, <b>VOL\u2212</b> = slower. Different buttons from the Jukebox, so one remote can't set off both."}], "demo": "fan"};</script>
 <script type="module">
 // Build animation engine: makes every part in real sizes (mm) with three.js
 // and plays a project's build steps from SPEC (injected above this file).
@@ -80,11 +84,16 @@ const V = (x, y, z) => new THREE.Vector3(x, z, -y);
 const rowX = r => (r - BOARD.mid) * PITCH;
 const RAD = Math.PI / 180;
 
+// A second breadboard is named with a prefix, e.g. "pad:19e"; S.boards gives its offset in mm
+const OFFSET = (S.boards ?? {});
 function hole(label) {
+  let pre = "", m0 = /^(\w+):(.*)$/.exec(label);
+  if (m0 && OFFSET[m0[1]]) { pre = m0[1]; label = m0[2]; }
+  const [dx, dy] = pre ? OFFSET[pre] : [0, 0];
   let m = /^(red|blue) rail @(\d+)$/.exec(label);
-  if (m) return V(rowX(+m[2]), RAIL_Y[m[1]], 0);
+  if (m) return V(rowX(+m[2]) + dx, RAIL_Y[m[1]] + dy, 0);
   m = /^(\d+)([a-j])$/.exec(label);
-  if (m) return V(rowX(+m[1]), COL_Y[m[2]], 0);
+  if (m) return V(rowX(+m[1]) + dx, COL_Y[m[2]] + dy, 0);
   return null;
 }
 
@@ -221,6 +230,7 @@ B.breadboard = p => {
   g.add(decal(len, wid, tex, 0.01));
   g.traverse(o => { if (o.isMesh) o.castShadow = false; });
   body.receiveShadow = true;
+  if (p.board) { const [dx, dy] = OFFSET[p.board]; g.position.copy(V(dx, dy, 0)); }
   return { group: g };
 };
 
@@ -709,6 +719,78 @@ B.keys = p => {
   return { group: g };
 };
 
+
+// 6 x 6 mm push button straddling the middle gap: legs in e and f of two rows
+B.button = p => {
+  const g = new THREE.Group();
+  const [r0, r1] = p.rows, pre = p.board ? p.board + ":" : "";
+  const a = hole(`${pre}${r0}e`), b = hole(`${pre}${r1}f`);
+  const cx = (a.x + b.x) / 2, cy = -(a.z + b.z) / 2;
+  for (const r of [r0, r1]) for (const c of ["e", "f"]) {
+    const h = hole(`${pre}${r}${c}`);
+    put(g, cyl(0.35, 0.35, 6.5, metal(), 8), h.x, -h.z, 0.25);
+    put(g, box(0.8, 0.4, Math.abs(COL_Y[c]) - 2.4, metal()), h.x, cy + COL_Y[c] / 2 + Math.sign(COL_Y[c]) * 1.2, 3.3);
+  }
+  put(g, box(6, 3.5, 6, mat(0x1d1d1f, { roughness: 0.5 }), 0.4), cx, cy, 3 + 1.75);
+  put(g, box(6.2, 0.4, 6.2, metal()), cx, cy, 6.6);
+  const capCol = { red: 0xd62828, yellow: 0xf2c200, blue: 0x2459d6, green: 0x1f9d48 }[p.cap] ?? 0x333333;
+  const cap = put(g, cyl(2.6, 2.6, 3, mat(capCol, { roughness: 0.35 }), 24), cx, cy, 8.3);
+  const up = cap.position.y;
+  return { group: g, press(v) { cap.position.y = up - (v ? 1.1 : 0); } };
+};
+
+// Joystick module (KY-023 style): 34 x 26 mm PCB lying flat, 5 pins pointing -x
+B.joystick = p => {
+  const g = new THREE.Group();
+  put(g, box(34, 1.6, 26, mat(0x1c1c1c, { roughness: 0.5 }), 0.6), 0, 0, 2.6);
+  const lab = canvasTex(340, 260, (c, w, h) => {
+    c.fillStyle = "#1c1c1c"; c.fillRect(0, 0, w, h); c.fillStyle = "#f2f2f2"; c.font = "bold 19px sans-serif"; c.textAlign = "left";
+    ["GND", "+5V", "VRx", "VRy", "SW"].forEach((t, k) => c.fillText(t, 10, 130 - (k - 2) * 25.4 + 7));
+  });
+  g.add((() => { const d = decal(34, 26, lab, 3.42); return d; })());
+  put(g, box(16, 9, 16, mat(0x2a2a2a, { roughness: 0.4 })), 3, 0, 3.4 + 4.5);
+  for (const dx of [-6, 12]) put(g, box(3, 6, 18, mat(0x3a3a3a)), 3 + dx * 0.55, 0, 3.4 + 3);
+  const stick = new THREE.Group(); stick.position.copy(V(3, 0, 12.5)); g.add(stick);
+  stick.add((() => { const m = cyl(1.8, 1.8, 10, mat(0x2a2a2a), 16); m.position.y = 5; return m; })());
+  const capm = mat(0x111111, { roughness: 0.7 });
+  stick.add((() => { const m = cyl(11, 10, 6, capm, 36); m.position.y = 12; return m; })());
+  stick.add((() => { const m = mesh(new THREE.TorusGeometry(9.5, 1.2, 8, 36), capm); m.rotation.x = Math.PI / 2; m.position.y = 15; return m; })());
+  const anchors = {};
+  ["GND", "+5V", "VRx", "VRy", "SW"].forEach((nm, k) => {
+    const y = -(k - 2) * PITCH;
+    put(g, box(2.5, 2.5, 2.5, mat(0x161616)), -18.3, y, 2.6);
+    put(g, box(7, 0.64, 0.64, gold()), -21, y, 2.6);
+    anchors["Joystick " + nm] = { pos: V(-24.5, y, 2.6), dir: V(-1, 0, 0), female: true, local: true };
+  });
+  return { group: g, stick, anchors };
+};
+
+// Laptop with a runner game on the screen
+B.laptop = p => {
+  const g = new THREE.Group();
+  const body = mat(0xb9bec6, { metalness: 0.6, roughness: 0.35 });
+  put(g, box(320, 16, 215, body, 6), 0, 0, 8);
+  const kb = canvasTex(640, 400, (c, w, h) => {
+    c.fillStyle = "#b9bec6"; c.fillRect(0, 0, w, h); c.fillStyle = "#2a2d33";
+    for (let r = 0; r < 5; r++) for (let k = 0; k < 14; k++) c.fillRect(40 + k * 40, 30 + r * 40, 34, 34);
+    c.fillRect(200, 230, 240, 34); c.fillStyle = "#a6abb3"; c.fillRect(220, 280, 200, 110);
+  });
+  g.add((() => { const d = decal(300, 190, kb, 16.05); d.position.z = 5; return d; })());
+  const lid = new THREE.Group(); lid.position.copy(V(0, 106, 16)); lid.rotation.x = -14 * RAD; g.add(lid);
+  put(lid, box(320, 205, 6, body, 6), 0, 0, 102.5);
+  const sc = document.createElement("canvas"); sc.width = 640; sc.height = 400;
+  const st = new THREE.CanvasTexture(sc); st.colorSpace = THREE.SRGBColorSpace;
+  const scr = new THREE.Mesh(new THREE.PlaneGeometry(300, 187.5), new THREE.MeshBasicMaterial({ map: st, toneMapped: false }));
+  scr.position.copy(V(0, -3.05, 104)); lid.add(scr);
+  const c = sc.getContext("2d"), sky = c.createLinearGradient(0, 0, 0, 400);
+  sky.addColorStop(0, "#7cc6ff"); sky.addColorStop(1, "#d7f0ff"); c.fillStyle = sky; c.fillRect(0, 0, 640, 400);
+  c.fillStyle = "#5b6470"; c.beginPath(); c.moveTo(280, 120); c.lineTo(360, 120); c.lineTo(760, 400); c.lineTo(-120, 400); c.fill();
+  c.fillStyle = "rgba(10,16,24,.75)"; c.fillRect(150, 150, 340, 90);
+  c.fillStyle = "#fff"; c.font = "bold 30px sans-serif"; c.textAlign = "center"; c.fillText("Press Space to play", 320, 205);
+  st.needsUpdate = true;
+  return { group: g, screenC: sc, screenT: st };
+};
+
 // ---------------------------------------------------------------- build the scene from SPEC
 const parts = {};
 const anchorsWorld = {};
@@ -782,6 +864,10 @@ function endInfo(e) {
 const wires = [];
 S.wires.forEach((w, idx) => {
   const [from, to, colour, opt = {}] = w;
+  if (String(colour).startsWith("inside")) {
+    const g = new THREE.Group(); const tube = new THREE.Mesh(new THREE.BufferGeometry()); g.add(tube); root.add(g);
+    wires.push({ group: g, tube, total: 0, idx, label: false, from, to }); return;
+  }
   const A = endInfo(from), Bn = endInfo(to);
   const col = WIRE_HEX[colour] ?? 0x888888;
   const g = new THREE.Group();
@@ -873,7 +959,7 @@ function focusBox(ids) {
 let camFrom = null, camTo = null, camT = 1;
 function aim(step) {
   let target, dist;
-  if (step.cam) { target = V(...step.cam.target); dist = step.cam.dist; }
+  if (step.cam) { target = V(...step.cam.target); dist = step.cam.dist ?? step.dist ?? 500; }
   else {
     const ids = step.focus ?? step.show ?? [];
     const bb = focusBox(ids.length ? ids : Object.keys(items));
@@ -1095,6 +1181,97 @@ DEMOS.car = {
   },
 };
 
+
+// Parking Sensor: the box slides towards the sensor, screen + buzzer react
+function drawParking(o, d) {
+  const P = S.parking, c = o.screenC.getContext("2d"), k = 2; // canvas is 2x the OLED's 128 x 64
+  c.fillStyle = "#000"; c.fillRect(0, 0, 256, 128); c.fillStyle = c.strokeStyle = "#7fd8ff";
+  const clear = !(d < P.far);
+  if (clear) { c.font = "bold 32px monospace"; c.fillText("Clear", 8 * k, 38 * k); }
+  else { c.font = "bold 46px monospace"; c.fillText(String(Math.round(d)), 4 * k, 34 * k); c.font = "bold 16px monospace"; c.fillText("cm", 6 * k, 50 * k); }
+  const cx = 96 * k;
+  c.beginPath(); c.roundRect(cx - 14 * k, 52 * k, 28 * k, 11 * k, 3 * k); c.fill();           // the car
+  c.fillStyle = "#000"; c.fillRect(cx - 9 * k, 54 * k, 18 * k, 4 * k); c.fillStyle = "#7fd8ff";
+  const lit = clear ? 0 : d < P.close ? 3 : d < P.near ? 2 : 1;
+  [14, 22, 30].forEach((r, i) => {                                                          // 3 arcs behind it
+    c.lineWidth = (i < lit ? 3 : 1) * k; c.globalAlpha = i < lit ? 1 : 0.35;
+    c.beginPath(); c.arc(cx, 52 * k, r * k, Math.PI * 1.15, Math.PI * 1.85); c.stroke();
+  });
+  c.globalAlpha = 1;
+  if (!clear) { c.fillRect(cx - 18 * k, (4 + (1 - d / P.far) * 12) * k, 36 * k, 4 * k); }
+  o.screenT.needsUpdate = true;
+}
+function screenInset(o, label) {
+  let d = document.getElementById("inset");
+  if (!d) { d = document.createElement("div"); d.id = "inset"; d.innerHTML = `<span>${label}</span>`; d.appendChild(o.screenC); document.body.appendChild(d); }
+  d.hidden = false;
+}
+DEMOS.parking = {
+  reset() { this.next = 0; this.d = 80; const t = parts.target; if (t) t.group.position.copy(finalPos.get(t.group)); },
+  tick(dt, t) {
+    const tg = parts.target, sn = parts.sensor, o = parts.oled; if (!tg || !sn || !o) return;
+    const P = S.parking, period = 16, ph = (t % period) / period;
+    const d = 2 + (ph < 0.5 ? 1 - ph * 2 : (ph - 0.5) * 2) * 78; // 80 cm -> 2 cm -> 80 cm
+    const f = finalPos.get(tg.group), face = -sn.group.position.z + 14;
+    tg.group.position.set(f.x, f.y, -(face + 30 + d * 10));
+    drawParking(o, d); screenInset(o, "OLED screen, live");
+    const solid = d < P.solid;
+    if (d < P.far && (solid || t >= this.next)) {
+      const gap = solid ? 0.09 : 0.08 + (Math.min(d, P.far) - P.solid) / (P.far - P.solid) * 0.62;
+      this.next = t + gap; beep(2600, solid ? 0.1 : 0.06, "square", 0.04); ring(parts.buzzer.waves, d < P.close ? 0xff3b3b : 0xff9f1a);
+    }
+    if (d < P.far && (t - (this.sayT ?? -9)) > 0.5) { this.sayT = t; say(solid ? "Solid tone" : `${Math.round(d)} cm`, tg.group.position.clone().add(new THREE.Vector3(0, 120, 0))); }
+    tickRings(parts.buzzer.waves, dt);
+  },
+};
+
+// Game Controller: joystick tilts, buttons press, the runner on the laptop reacts
+DEMOS.controller = {
+  reset() { this.i = -1; this.next = 0.8; this.lane = 0; this.laneNow = 0; this.jump = -9; this.roll = -9; this.key = ""; },
+  tick(dt, t) {
+    const js = parts.joystick, lp = parts.laptop; if (!js || !lp) return;
+    const seq = [["left", "←"], ["right", "→"], ["right", "→"], ["space", "Space"], ["left", "←"], ["down", "↓"], ["left", "←"], ["space", "Space"], ["right", "→"]];
+    if (t >= this.next) {
+      this.i = (this.i + 1) % seq.length; this.next = t + 1.25;
+      const [a, label] = seq[this.i]; this.act = a; this.actT = t; this.key = label;
+      if (a === "left") this.lane = Math.max(-1, this.lane - 1);
+      if (a === "right") this.lane = Math.min(1, this.lane + 1);
+      if (a === "space") this.jump = t;
+      if (a === "down") this.roll = t;
+      beep(a === "space" ? 880 : 520, 0.05, "square", 0.03);
+    }
+    const held = t - this.actT < 0.45;
+    const tilt = held ? 0.38 : 0;
+    js.stick.rotation.z = this.act === "left" ? tilt : this.act === "right" ? -tilt : 0;
+    js.stick.rotation.x = this.act === "down" ? tilt : 0;
+    parts.btn1?.press(held && this.act === "space");
+    this.laneNow += (this.lane - this.laneNow) * Math.min(1, dt * 9);
+    const c = lp.screenC.getContext("2d"), W = 640, H = 400;
+    const sky = c.createLinearGradient(0, 0, 0, H); sky.addColorStop(0, "#7cc6ff"); sky.addColorStop(1, "#d7f0ff");
+    c.fillStyle = sky; c.fillRect(0, 0, W, H);
+    const hz = 120, X = (lane, y) => W / 2 + lane * (60 + (y - hz) * 0.9);
+    c.fillStyle = "#5b6470"; c.beginPath(); c.moveTo(W / 2 - 40, hz); c.lineTo(W / 2 + 40, hz); c.lineTo(W + 120, H); c.lineTo(-120, H); c.fill();
+    c.strokeStyle = "#e8e2c8"; c.lineWidth = 4;
+    for (const l of [-0.5, 0.5]) { c.beginPath(); c.moveTo(X(l, hz), hz); c.lineTo(X(l, H), H); c.stroke(); }
+    for (let k = 0; k < 6; k++) { // sleepers moving towards you
+      const y = hz + ((k / 6 + t * 0.6) % 1) ** 2 * (H - hz);
+      c.fillStyle = "rgba(0,0,0,.18)"; c.fillRect(X(-1.5, y), y, X(1.5, y) - X(-1.5, y), 3 + (y - hz) * 0.03);
+    }
+    const ob = (lane, ph, col) => { const q = ((t * 0.35 + ph) % 1) ** 2, y = hz + q * (H - hz), s = 10 + q * 90; c.fillStyle = col; c.fillRect(X(lane, y) - s / 2, y - s, s, s); };
+    ob(-1, 0.1, "#e9a23b"); ob(1, 0.55, "#d64545"); ob(0, 0.8, "#3f9b5a");
+    const jy = Math.max(0, Math.sin(Math.min(1, (t - this.jump) / 0.6) * Math.PI)) * 70;
+    const rolling = t - this.roll < 0.6;
+    const rx_ = X(this.laneNow, H - 40), ry = H - 40 - jy;
+    c.fillStyle = "rgba(0,0,0,.25)"; c.beginPath(); c.ellipse(rx_, H - 30, 26, 8, 0, 0, 7); c.fill();
+    c.fillStyle = "#2f6fe4"; c.fillRect(rx_ - 16, ry - (rolling ? 40 : 70), 32, rolling ? 30 : 50);
+    c.fillStyle = "#f1c27d"; c.beginPath(); c.arc(rx_, ry - (rolling ? 50 : 84), 14, 0, 7); c.fill();
+    c.fillStyle = "rgba(10,16,24,.75)"; c.fillRect(0, 0, W, 44);
+    c.fillStyle = "#fff"; c.font = "bold 22px sans-serif"; c.textAlign = "left"; c.fillText("🎮 Robotics Club Controller 1 · connected", 14, 30);
+    if (held) { c.textAlign = "right"; c.fillStyle = "#ffd21f"; c.fillText(`key: ${this.key}`, W - 14, 30); }
+    lp.screenT.needsUpdate = true;
+  },
+};
+
 // ---------------------------------------------------------------- UI
 const dots = document.getElementById("dots");
 steps.forEach((s, k) => { const b = document.createElement("button"); b.title = s.title; b.onclick = () => { goTo(k); }; dots.appendChild(b); });
@@ -1138,7 +1315,7 @@ function frame() {
     off.applyAxisAngle(new THREE.Vector3(0, 1, 0), dt * 0.12); camera.position.copy(controls.target).add(off);
   }
   const s = steps[cur];
-  if (s.demo) { demoState.t += dt; DEMOS[S.demo]?.tick(dt, demoState.t); } else beam.visible = false;
+  if (s.demo) { demoState.t += dt; DEMOS[S.demo]?.tick(dt, demoState.t); } else { beam.visible = false; const ins = document.getElementById("inset"); if (ins) ins.hidden = true; }
   // autoplay
   const words = (s.text || "").replace(/<[^>]+>/g, "").split(/\s+/).length;
   const hold = s.hold ?? (s.demo ? 16 : Math.max(5.5, 2.4 + words * 0.32 + (s.show?.length ?? 0) * 0.45));
